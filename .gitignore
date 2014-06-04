@@ -16,3 +16,4 @@ cabal.config
 
 # Project
 data
+output
