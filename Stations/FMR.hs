@@ -2,6 +2,9 @@ module Stations.FMR where
 
 import Program
 import Text.HTML.TagSoup as TagSoup
+import Data.Char (isDigit)
+import Data.List (isInfixOf)
+import Debug.Trace (trace)
 
 isProgramSection :: Tag String -> Bool
 isProgramSection tag = (tag ~== "<div class=progLeft>") || (tag ~== "<div class=progRight>")
@@ -20,14 +23,28 @@ progTitle tags = innerText $ take 1 $ drop 1 tags
 progType :: [Tag String] -> String
 progType tags = innerText $ take 1 $ drop 5 tags
 
+progTimes :: String -> (String, String)
+progTimes string =
+    let parts = words string
+    in (parts !! 0, parts !! 2)
+
+isFortnightly :: String -> Bool
+isFortnightly string = (length $ words string) > 3
 
 makeProgram :: [Tag String] -> Program
-makeProgram progTag = Program {
-    day = (spanContent "dayTitle" progTag)
-  , time = (spanContent "hourTitle" progTag)
-  , title = (progTitle $ titleSection progTag)
-  , genre = (progType $ titleSection progTag)
-}
+makeProgram progTag =
+    let
+        timeString = (spanContent "hourTitle" progTag)
+        (startTime, endTime) = progTimes timeString
+    in
+        Program {
+            day = (spanContent "dayTitle" progTag)
+          , startTime = startTime
+          , endTime = endTime
+          , fortnightly = (isFortnightly timeString)
+          , title = (progTitle $ titleSection progTag)
+          , genre = (progType $ titleSection progTag)
+        }
 
 programs :: String -> [Program]
 programs contents =

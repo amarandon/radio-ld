@@ -5,7 +5,9 @@ import GHC.Generics
 
 data Program = Program {
      day :: String
-   , time :: String
+   , startTime :: String
+   , endTime :: String
+   , fortnightly :: Bool
    , title :: String
    , genre :: String
 } deriving (Show, Generic)
@@ -18,7 +20,9 @@ printProgram :: Program -> IO ()
 printProgram program = do
     putStrLn "*****************************"
     putStrLn $ "Day: " ++ (day program)
-    putStrLn $ "Hour: " ++ (time program)
+    putStrLn $ "Start time: " ++ (show (startTime program))
+    putStrLn $ "End time: " ++ (show (endTime program))
+    putStrLn $ "Fortnighly: " ++ (show (fortnightly program))
     putStrLn $ "Title: " ++ (title program)
     putStrLn $ "Type: " ++ (genre program)
 
