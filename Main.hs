@@ -10,5 +10,7 @@ import System.Directory (createDirectoryIfMissing)
 main = do
     contents <- readFile "data/fmr.html"
     let json = encodePretty $ FMR.programs contents
+        outputFile = "output/fmr.json"
     createDirectoryIfMissing True "output"
-    B.writeFile "output/fmr.json" json
+    putStrLn $ "Writing file " ++ outputFile
+    B.writeFile outputFile json
