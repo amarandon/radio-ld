@@ -1,0 +1,25 @@
+{
+  "name": "radio-ld",
+  "version": "0.0.0",
+  "description": "Publish radio programs",
+  "main": "script.js",
+  "dependencies": {
+    "testem": "~0.6.18"
+  },
+  "devDependencies": {
+    "testem": "~0.6.18"
+  },
+  "scripts": {
+    "test": "./node_modules/.bin/testem"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/amarandon/radio-ld.git"
+  },
+  "author": "Alex Marandon",
+  "license": "BSD-2-Clause",
+  "bugs": {
+    "url": "https://github.com/amarandon/radio-ld/issues"
+  },
+  "homepage": "https://github.com/amarandon/radio-ld"
+}

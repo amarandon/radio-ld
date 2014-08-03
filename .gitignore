@@ -11,9 +11,13 @@ cabal-dev
 cabal.sandbox.config
 cabal.config
 
+# JavaScript
+node_modules/
+
 # Vim
 *.sw?
 
-# Project
+# Project-specific
 data
 output
+lib

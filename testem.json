@@ -1,0 +1,6 @@
+{
+  "src_files": [
+    "lib/d3.v3.js",
+    "*.js"
+  ]
+}
