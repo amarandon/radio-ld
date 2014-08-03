@@ -6,6 +6,8 @@ function Show(data) {
   }
 }
 
+Show.days = ["lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi", "dimanche"];
+
 Show.prototype = {
   toMinutes: function(string) {
     var parts = string.split("h"),
@@ -16,6 +18,9 @@ Show.prototype = {
   duration: function() {
     return (this.toMinutes(this.endTime)
             - this.toMinutes(this.startTime));
+  },
+  dayIndex: function() {
+    return Show.days.indexOf(this.day.toLowerCase());
   }
 };
 

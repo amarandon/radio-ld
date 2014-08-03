@@ -1,9 +1,10 @@
-describe("RadioShow", function() {
+describe("Show", function() {
   beforeEach(function() {
     this.data = {
       "startTime": "01h",
       "endTime": "02h",
-      "title": "The title"
+      "title": "The title",
+      "day": "LUNDI"
     };
   });
   it("should receive data attributes", function() {
@@ -19,6 +20,12 @@ describe("RadioShow", function() {
       var data = {"startTime": "01h", "endTime": "02h30"};
       var show = new Show(data);
       expect(show.duration()).toBe(90);
+    });
+  });
+  describe("dayIndex", function() {
+    it("should return zero-indexed day of the week", function() {
+      var show = new Show(this.data);
+      expect(show.dayIndex()).toBe(0);
     });
   });
 });
