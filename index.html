@@ -3,10 +3,20 @@
   <head>
     <meta charset="utf-8">
     <title>playing with d3</title>
+    <style>
+    #program text {
+        fill: black;
+        font: 12px sans-serif;
+    }
+    </style>
   </head>
   <body>
   <script src="lib/d3.v3.js"></script>
   <script src="script.js"></script>
+  <svg id="program"></svg>
+  <script>
+    RadioLD.drawProgram(document.getElementById("program"));
+  </script>
   </body>
 </html>
 

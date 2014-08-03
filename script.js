@@ -1,3 +1,5 @@
+var RadioLD = (function() {  // begin module
+
 function Show(data) {
   for (property in data) {
     if (data.hasOwnProperty(property)) {
@@ -10,23 +12,62 @@ Show.days = ["lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi", "diman
 
 Show.prototype = {
   toMinutes: function(string) {
-    var parts = string.split("h"),
+    var parts = string.toLowerCase().split("h"),
         hours = Number(parts[0]),
         minutes = Number(parts[1]);
     return hours * 60 + minutes;
   },
   duration: function() {
-    return (this.toMinutes(this.endTime)
-            - this.toMinutes(this.startTime));
+    return (this.toMinutes(this.endTime) - this.toMinutes(this.startTime));
+  },
+  startMinute: function() {
+    return this.toMinutes(this.startTime);
   },
   dayIndex: function() {
     return Show.days.indexOf(this.day.toLowerCase());
   }
 };
 
+function drawProgram(svg, data) {
+  var width = 3000,
+      height = 500,
+      rowHeight = height / 7;
 
-// scale: 1440 minutes per day
+  var x = d3.scale.linear()
+    .range([0, width])
+    .domain([0, 60 * 24]);
+
+  var y = d3.scale.linear()
+    .range([0, height - rowHeight])
+    .domain([0, 6]);
+
+  var program = d3.select(svg)
+    .attr("width", width)
+    .attr("height", height);
+
+  var block = program.selectAll("g")
+      .data(data)
+    .enter().append("g");
+  block.append("rect")
+    .attr("x", function(d) { return x(d.startMinute()); })
+    .attr("y", function(d) { return y(d.dayIndex()); })
+    .attr("fill", "#ccc")
+    .attr("height", rowHeight - 1)
+    .attr("width", function(d) { return x(d.duration() - 1); });
+  block.append("text")
+    .attr("x", function(d) { return x(d.startMinute()); })
+    .attr("y", function(d) { return y(d.dayIndex()); })
+    .attr("dy", "1.75em")
+    .attr("dx", "0.75em")
+    .text(function(d) { return d.startTime + " " + d.title; });
+}
+
 d3.json("output/fmr.json", function(error, json) {
   if (error) return console.warn(error);
-  data = json;
+  var data = json.map(function(item) { return new Show(item); });
+  RadioLD.drawProgram(document.getElementById("program"), data);
 });
+
+return {Show: Show, drawProgram: drawProgram};
+
+}());  // end module
