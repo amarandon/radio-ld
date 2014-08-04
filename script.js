@@ -22,10 +22,20 @@ Show.prototype = {
     return hours * 60 + minutes;
   },
   duration: function() {
-    return (this.toMinutes(this.endTime) - this.toMinutes(this.startTime));
+    var endTime = this.toMinutes(this.endTime),
+        startTime = this.toMinutes(this.startTime),
+        result = endTime - startTime;
+    if (result < 0) { // Crosses midnight
+      endTime += 24 * 60;
+    }
+    return (endTime - startTime);
   },
   startMinute: function() {
-    return this.toMinutes(this.startTime);
+    var result = this.toMinutes(this.startTime) - (60 * 7);
+    if (result < 0) {
+      result = (24 * 60) + result;
+    }
+    return result;
   },
   dayIndex: function() {
     return Show.days.indexOf(this.day.toLowerCase());
@@ -33,9 +43,10 @@ Show.prototype = {
 };
 
 function drawProgram(svg, data) {
-  var width = 3000,
+  var width = 2300,
       height = 500,
-      rowHeight = height / 7;
+      rowHeight = height / 7,
+      cellSpacing = 2;
 
   var x = d3.scale.linear()
     .range([0, width])
@@ -55,20 +66,22 @@ function drawProgram(svg, data) {
   block.append("rect")
     .attr("x", function(d) { return x(d.startMinute()); })
     .attr("y", function(d) { return y(d.dayIndex()); })
-    .attr("fill", "#ccc")
-    .attr("height", rowHeight - 1)
-    .attr("width", function(d) { return x(d.duration()) - 1; });
+    .attr("fill", "#ff8705")
+    .attr("height", rowHeight - cellSpacing)
+    .attr("width", function(d) { return x(d.duration()) - cellSpacing; });
   var switchElement = block.append("switch");
-  switchElement.append("foreignObject")
+  var htmlBody = switchElement.append("foreignObject")
     .attr("x", function(d) { return x(d.startMinute()); })
     .attr("y", function(d) { return y(d.dayIndex()); })
-    .attr("width", function(d) { return x(d.duration()) - 1; })
+    .attr("width", function(d) { return x(d.duration()) - cellSpacing; })
     .attr("height", rowHeight)
     .attr("requiredExtensions", "http://www.w3.org/1999/xhtml")
     .append("xhtml:body")
-      .attr("xmlns", "http://www.w3.org/1999/xhtml")
-      .append("xhtml:p")
-        .text(function(d) { return d.startTime + " " + d.title; });
+      .attr("xmlns", "http://www.w3.org/1999/xhtml");
+   htmlBody.append("xhtml:p")
+     .text(function(d) { return d.startTime + " - " + d.endTime; });
+   htmlBody.append("xhtml:p")
+     .text(function(d) { return d.title; });
   switchElement.append("text")
     .attr("x", function(d) { return x(d.startMinute()); })
     .attr("y", function(d) { return y(d.dayIndex()); })

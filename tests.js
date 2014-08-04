@@ -25,11 +25,21 @@ describe("RadioLD", function() {
       var show = new Show(data);
       expect(show.duration()).toBe(90);
     });
+    it('should work when endTime is midnight', function() {
+      var data = {"startTime": "23h", "endTime": "00h"};
+      var show = new Show(data);
+      expect(show.duration()).toBe(60);
+    });
+    it('should work accross midnight', function() {
+      var data = {"startTime": "23h30", "endTime": "01h30"};
+      var show = new Show(data);
+      expect(show.duration()).toBe(120);
+    });
   });
   describe("startMinute", function() {
-    it("should return start time in minutes", function() {
+    it("should return start time in minutes after 7am", function() {
       var show = new Show({startTime: "01h30"});
-      expect(show.startMinute()).toBe(90);
+      expect(show.startMinute()).toBe(((24 - 7) * 60) + 90);
     });
   });
   describe("dayIndex", function() {

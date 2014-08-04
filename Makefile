@@ -3,3 +3,6 @@ test:
 
 install:
 	npm install
+
+serve:
+	python -m SimpleHTTPServer
