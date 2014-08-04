@@ -1,17 +1,20 @@
-describe("Show", function() {
+/* jshint browser: true */
+/* global beforeEach, afterEach, describe, it, expect, RadioLD */
+describe("RadioLD", function() {
+  "use strict";
   var Show = RadioLD.Show;
   beforeEach(function() {
     this.data = {
-      "startTime": "01h",
-      "endTime": "02H",
-      "title": "The title",
-      "day": "LUNDI"
+      startTime: "01h",
+      endTime: "02H",
+      title: "The title",
+      day: "LUNDI"
     };
   });
   it("should receive data attributes", function() {
     var show = new Show(this.data);
     expect(show.title).toBe("The title");
-  }),
+  });
   describe("duration", function() {
     it("should return duration in minutes for round hours", function() {
       var show = new Show(this.data);
@@ -35,24 +38,19 @@ describe("Show", function() {
       expect(show.dayIndex()).toBe(0);
     });
   });
-});
-
-describe("drawProgram", function() {
-  return;
-  var drawProgram = RadioLD.drawProgram;
-  beforeEach(function() {
-    this.container = document.getElementById("jasmine_content");
-    this.container.appendChild(document.createElement("svg"));
-  });
-  afterEach(function() {
-    this.container.innerHTML = "";
-  });
-  it("should insert an svg element", function() {
-    drawProgram(this.container);
-    expect(document.querySelectorAll("svg").length).toBe(1);
-  });
-  it("should insert a circle", function() {
-    drawProgram(this.container);
-    expect(document.querySelectorAll("circle").length).toBe(1);
+  describe("drawProgram", function() {
+    var drawProgram = RadioLD.drawProgram;
+    beforeEach(function() {
+      this.container = document.getElementById("jasmine_content");
+      this.container.appendChild(document.createElement("svg"));
+      expect(document.querySelectorAll("svg").length).toBe(1);
+    });
+    afterEach(function() {
+      this.container.innerHTML = "";
+    });
+    it("should insert a rectangle", function() {
+      drawProgram(this.container, [new Show(this.data)]);
+      expect(document.querySelectorAll("rect").length).toBe(1);
+    });
   });
 });

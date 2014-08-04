@@ -1,3 +1,5 @@
+/* jshint browser: true */
+/* globals d3 */
 var RadioLD = (function() {  // begin module
 
 "use strict";
@@ -58,15 +60,15 @@ function drawProgram(svg, data) {
     .attr("width", function(d) { return x(d.duration()) - 1; });
   var switchElement = block.append("switch");
   switchElement.append("foreignObject")
-      .attr("x", function(d) { return x(d.startMinute()); })
-      .attr("y", function(d) { return y(d.dayIndex()); })
-      .attr("width", function(d) { return x(d.duration()) - 1; })
-      .attr("height", rowHeight)
-      .attr("requiredExtensions", "http://www.w3.org/1999/xhtml")
-      .append("xhtml:body")
-        .attr("xmlns", "http://www.w3.org/1999/xhtml")
-        .append("xhtml:p")
-          .text(function(d) { return d.startTime + " " + d.title; });
+    .attr("x", function(d) { return x(d.startMinute()); })
+    .attr("y", function(d) { return y(d.dayIndex()); })
+    .attr("width", function(d) { return x(d.duration()) - 1; })
+    .attr("height", rowHeight)
+    .attr("requiredExtensions", "http://www.w3.org/1999/xhtml")
+    .append("xhtml:body")
+      .attr("xmlns", "http://www.w3.org/1999/xhtml")
+      .append("xhtml:p")
+        .text(function(d) { return d.startTime + " " + d.title; });
   switchElement.append("text")
     .attr("x", function(d) { return x(d.startMinute()); })
     .attr("y", function(d) { return y(d.dayIndex()); })
@@ -76,7 +78,9 @@ function drawProgram(svg, data) {
 }
 
 d3.json("output/fmr.json", function(error, json) {
-  if (error) return console.warn(error);
+  if (error) {
+    return console.warn(error);
+  }
   var data = json.map(function(item) { return new Show(item); });
   RadioLD.drawProgram(document.getElementById("program"), data);
 });
