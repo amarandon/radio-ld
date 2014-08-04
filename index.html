@@ -8,12 +8,16 @@
         fill: black;
         font: 12px sans-serif;
     }
+    p {
+      font: 12px sans-serif;
+      margin-top: 8px;
+    }
     </style>
   </head>
   <body>
   <script src="lib/d3.v3.js"></script>
   <script src="script.js"></script>
-  <svg id="program"></svg>
+  <svg id="program" xmlns="http://www.w3.org/2000/svg"></svg>
   <script>
     RadioLD.drawProgram(document.getElementById("program"));
   </script>

@@ -1,7 +1,9 @@
 var RadioLD = (function() {  // begin module
 
+"use strict";
+
 function Show(data) {
-  for (property in data) {
+  for (var property in data) {
     if (data.hasOwnProperty(property)) {
       this[property] = data[property];
     }
@@ -53,8 +55,19 @@ function drawProgram(svg, data) {
     .attr("y", function(d) { return y(d.dayIndex()); })
     .attr("fill", "#ccc")
     .attr("height", rowHeight - 1)
-    .attr("width", function(d) { return x(d.duration() - 1); });
-  block.append("text")
+    .attr("width", function(d) { return x(d.duration()) - 1; });
+  var switchElement = block.append("switch");
+  switchElement.append("foreignObject")
+      .attr("x", function(d) { return x(d.startMinute()); })
+      .attr("y", function(d) { return y(d.dayIndex()); })
+      .attr("width", function(d) { return x(d.duration()) - 1; })
+      .attr("height", rowHeight)
+      .attr("requiredExtensions", "http://www.w3.org/1999/xhtml")
+      .append("xhtml:body")
+        .attr("xmlns", "http://www.w3.org/1999/xhtml")
+        .append("xhtml:p")
+          .text(function(d) { return d.startTime + " " + d.title; });
+  switchElement.append("text")
     .attr("x", function(d) { return x(d.startMinute()); })
     .attr("y", function(d) { return y(d.dayIndex()); })
     .attr("dy", "1.75em")
