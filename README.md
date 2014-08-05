@@ -1,8 +1,7 @@
 Publishing local radio programs
 
-Development
-===========
+Use the Makefile to build and develop:
 
-    $ cabal sandbox init
-    $ cabal install --dependencies-only
-    $ cabal run
+    $ make install
+    $ make test
+    $ make serve
